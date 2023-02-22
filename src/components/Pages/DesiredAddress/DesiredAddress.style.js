@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 30px;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,4 +38,18 @@ export const Wrapper = styled.div`
     color: white;
     cursor: pointer;
   }
+`;
+export const WarningModal = styled.div`
+  position: absolute;
+  width: 160px;
+  right: 50px;
+  background-color: red;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: 1s;
+  padding: 10px;
+  letter-spacing: 1px;
+  text-align: center;
+  border-radius: 15px;
 `;

@@ -1,12 +1,13 @@
 import React, { useRef, useState } from "react";
-import { Wrapper } from "./Address.style";
+import { Wrapper, WarningModal } from "./DesiredAddress.style";
 import MapComponent from "../../MapComponent/MapComponent";
 import { getPositionAPI } from "../../../api/axios";
 import { useQuery } from "react-query";
 
-function Address({ setSelectedTab, setCurrentSearch, currentSearch }) {
+function DesiredAddress({ setSelectedTab, setCurrentSearch, currentSearch }) {
   const [address, setAddress] = useState("Łódź, Piotrkowska 80 ");
   const [nextBTN, setNextBTN] = useState(false);
+  const [warningModal, setWarningModal] = useState(false);
   const focusRef = useRef();
 
   const { error, data, isFetching, isLoading, refetch } = useQuery(
@@ -25,15 +26,13 @@ function Address({ setSelectedTab, setCurrentSearch, currentSearch }) {
 
   const confirmBTN = () => {
     if (currentSearch.length === 0) {
-      setCurrentSearch([data]);
-    } else {
-      const nextCurrentSearch = currentSearch.map((item, i) =>
-        i === 0 ? data : item
-      );
-      setCurrentSearch(nextCurrentSearch);
+      setWarningModal(true);
+      setTimeout(() => setWarningModal(false), 3000);
+      return;
     }
-    setSelectedTab("2");
+    setCurrentSearch((prevState) => [...prevState, data]);
   };
+
   if (isFetching) return <p>Loading...</p>;
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -41,7 +40,7 @@ function Address({ setSelectedTab, setCurrentSearch, currentSearch }) {
   return (
     <Wrapper>
       <form onSubmit={(event) => submitBTN(event)}>
-        <label htmlFor="typeAddress">Choose your start location:</label>
+        <label htmlFor="typeAddress">Select desired location:</label>
         <input
           id="typeAddress"
           placeholder="Type address here"
@@ -56,8 +55,11 @@ function Address({ setSelectedTab, setCurrentSearch, currentSearch }) {
       </form>
       <MapComponent getPosition={data} />
       {nextBTN && <button onClick={() => confirmBTN()}>Next</button>}
+      {warningModal && (
+        <WarningModal>Confirm your starting position first !</WarningModal>
+      )}
     </Wrapper>
   );
 }
 
-export default Address;
+export default DesiredAddress;
