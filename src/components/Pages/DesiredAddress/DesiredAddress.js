@@ -1,15 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Wrapper, WarningModal } from "./DesiredAddress.style";
-import MapComponent from "../../MapComponent/MapComponent";
 import { getPositionAPI } from "../../../api/axios";
 import { useQuery } from "react-query";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import LoadingElement from "../../LoadingElement/LoadingElement";
 
-function DesiredAddress({ setSelectedTab, setCurrentSearch, currentSearch }) {
+const API_KEY = `${process.env.REACT_APP_APIGOOGLEMAPS}`;
+
+function DesiredAddress({ setCurrentSearch, currentSearch, setShowResult}) {
   const [address, setAddress] = useState("Łódź, Piotrkowska 80 ");
   const [nextBTN, setNextBTN] = useState(false);
+  const [center, setCenter] = useState({
+    lat: 51.7675,
+    lng: 19.45705,
+  });
   const [warningModal, setWarningModal] = useState(false);
-  const focusRef = useRef();
-
   const { error, data, isFetching, isLoading, refetch } = useQuery(
     "getPositionAPI",
     () => getPositionAPI(address),
@@ -17,25 +22,47 @@ function DesiredAddress({ setSelectedTab, setCurrentSearch, currentSearch }) {
       refetchOnWindowFocus: false,
     }
   );
-
-  const submitBTN = async (event) => {
-    event.preventDefault();
-    await refetch();
-    setNextBTN(true);
-  };
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: API_KEY,
+  });
 
   const confirmBTN = () => {
     if (currentSearch.length === 0) {
       setWarningModal(true);
       setTimeout(() => setWarningModal(false), 3000);
-      return;
+      return 
+    } else if (currentSearch.length === 1) {
+      setCurrentSearch((prevState) => [
+        ...prevState,
+        { address: address, data: data },
+      ]);
+    } else {
+      const nextCurrentSearch = currentSearch.map((item, i) =>
+        i === 1 ? { address: address, data: data } : item
+      );
+      setCurrentSearch(nextCurrentSearch);
     }
-    setCurrentSearch((prevState) => [...prevState, data]);
+    setShowResult(true);
   };
+  const submitBTN = async (event) => {
+    event.preventDefault();
+    await refetch();
+    setNextBTN(true);
+  };
+  useEffect(() => {
+    if (data) {
+      const nextCenter = {
+        lat: data[0],
+        lng: data[1],
+      };
+      setCenter(nextCenter);
+    }
+  }, [data]);
 
-  if (isFetching) return <p>Loading...</p>;
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (!isLoaded) return <LoadingElement />;
+  if (isFetching) return <LoadingElement />;
+  if (isLoading) return <LoadingElement />;
+  if (error) return <LoadingElement error={error} />;
 
   return (
     <Wrapper>
@@ -45,7 +72,6 @@ function DesiredAddress({ setSelectedTab, setCurrentSearch, currentSearch }) {
           id="typeAddress"
           placeholder="Type address here"
           type="text"
-          ref={focusRef}
           maxLength={40}
           onChange={(e) => setAddress(e.target.value)}
           value={address}
@@ -53,7 +79,19 @@ function DesiredAddress({ setSelectedTab, setCurrentSearch, currentSearch }) {
         />
         <button>Submit</button>
       </form>
-      <MapComponent getPosition={data} />
+      <GoogleMap
+        center={center}
+        zoom={13}
+        mapContainerStyle={{ width: "100%", height: "400px" }}
+        options={{
+          zoomControl: false,
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
+        }}
+      >
+        <Marker position={center} />
+      </GoogleMap>
       {nextBTN && <button onClick={() => confirmBTN()}>Next</button>}
       {warningModal && (
         <WarningModal>Confirm your starting position first !</WarningModal>

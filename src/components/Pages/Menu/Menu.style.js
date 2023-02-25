@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   height: 100%;
   margin-left: 15px;
-  width: 330px;
+  width: 350px;
   display: flex;
   align-items: center;
   .markCategory {

@@ -10,7 +10,9 @@ export const Wrapper = styled.div`
   align-items: center;
   font-size: 1.4rem;
   form {
-    margin-top: 100px;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    text-align: center;
   }
   input {
     width: 330px;

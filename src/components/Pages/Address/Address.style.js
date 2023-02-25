@@ -8,8 +8,11 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   font-size: 1.4rem;
+  position: relative;
   form {
-    margin-top: 100px;
+    margin-top: 60px;
+  margin-bottom: 60px;
+    text-align: center;
   }
   input {
     width: 330px;
@@ -37,4 +40,5 @@ export const Wrapper = styled.div`
     color: white;
     cursor: pointer;
   }
+
 `;

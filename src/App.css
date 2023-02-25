@@ -1,8 +1,4 @@
-.leaflet-container{
-    width:100%;
-    height:50vh
-}
 .Wrapper{
     display: flex;
-    height: 100vh;
+    height: 100vh
 }

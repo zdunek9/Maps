@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const URL_CODE = "https://geocode.search.hereapi.com/v1/geocode?q";
-const API_KEY = "ZJ3Ob39XmnQf2_GbGY-NcDd4_Js0BVsm6zM085yN7x4";
+const API_KEY = `${process.env.REACT_APP_APIGEOCODE}`;
+
 
 export const getPositionAPI = async (addressString) => {
   const replacedStringName = addressString.replace(/ /g, "+");

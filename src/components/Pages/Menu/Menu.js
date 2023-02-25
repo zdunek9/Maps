@@ -1,24 +1,28 @@
 import React from "react";
 import { Wrapper } from "./Menu.style";
 
-function Menu({ selectedTab, setSelectedTab }) {
+function Menu({ selectedTab, setSelectedTab, setShowResult }) {
+  const switchTab = (selectedTab) => {
+    setShowResult(false);
+    setSelectedTab(selectedTab);
+  };
   return (
     <Wrapper>
       <div>
         <p
-          onClick={() => setSelectedTab('1')}
+          onClick={() => switchTab("1")}
           className={`${selectedTab === "1" ? "markCategory" : ""}`}
         >
           Find your location
         </p>
         <p
-          onClick={() => setSelectedTab('2')}
+          onClick={() => switchTab("2")}
           className={`${selectedTab === "2" ? "markCategory" : ""}`}
         >
           Enter desired location
         </p>
         <p
-          onClick={() => setSelectedTab('3')}
+          onClick={() => switchTab("3")}
           className={`${selectedTab === "3" ? "markCategory" : ""}`}
         >
           History
