@@ -1,4 +1,3 @@
-import "./app.css";
 import Address from "./components/Pages/Address/Address";
 import Menu from "./components/Pages/Menu/Menu";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -7,6 +6,7 @@ import DesiredAddress from "./components/Pages/DesiredAddress/DesiredAddress";
 import ResultModal from "./components/Pages/ResultModal/ResultModal";
 import History from "./components/Pages/History/History";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { Wrapper } from "./app.style";
 
 function App() {
   const queryClient = new QueryClient();
@@ -15,7 +15,7 @@ function App() {
   const [currentSearch, setCurrentSearch] = useState([]);
   const location = useLocation();
   return (
-    <div className="Wrapper">
+    <Wrapper>
       <QueryClientProvider client={queryClient}>
         <Menu selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         <Routes location={location} key={location.pathname}>
@@ -82,7 +82,7 @@ function App() {
           />
         </Routes>
       </QueryClientProvider>
-    </div>
+    </Wrapper>
   );
 }
 
