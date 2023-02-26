@@ -6,10 +6,14 @@ export const Wrapper = styled.div`
   width: 350px;
   display: flex;
   align-items: center;
+  display: ${(props) => (props.hideMenu ? "none" : "")};
   .markCategory {
-    background-color: rgb(61, 48, 41);
+    background-color: var(--button1);
     color: #f5f5f5;
     border-radius: 10px;
+  }
+  .markCategory:hover {
+    background-color: var(--button-hover1);
   }
   p {
     padding: 20px;

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Wrapper } from "./History.style";
 
-function History({ historyData }) {
+function History({ historyData, setSelectedTab }) {
+  useEffect(() => {
+    setSelectedTab("4");
+  }, []);
   return (
     <Wrapper>
       <h1>History</h1>

@@ -1,6 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
+:root{
+  --button1:rgb(61, 48, 41);
+  --button-hover1:rgb(77, 60, 51)
+}
 body {
     margin: 0;
     padding: 0;

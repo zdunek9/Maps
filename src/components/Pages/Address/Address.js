@@ -4,13 +4,15 @@ import { getPositionAPI } from "../../../api/axios";
 import { useQuery } from "react-query";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import LoadingElement from "../../LoadingElement/LoadingElement";
+import { useNavigate } from "react-router-dom";
 
 const API_KEY = `${process.env.REACT_APP_APIGOOGLEMAPS}`;
 
 function Address({ setSelectedTab, setCurrentSearch, currentSearch }) {
-  const [address, setAddress] = useState("Łódź, Piotrkowska 80 ");    // state used for translating string into coordinates via API
+  const [address, setAddress] = useState("Łódź, Piotrkowska 80 "); // state used for translating string into coordinates via API
   const [nextBTN, setNextBTN] = useState(false);
-  const [center, setCenter] = useState({                              // state used for center searching location
+  const [center, setCenter] = useState({
+    // state used for center searching location
     lat: 51.7675,
     lng: 19.45705,
   });
@@ -25,7 +27,9 @@ function Address({ setSelectedTab, setCurrentSearch, currentSearch }) {
     googleMapsApiKey: API_KEY,
   });
 
-  const confirmBTN = () => {  
+  const navigate = useNavigate();
+
+  const confirmBTN = () => {
     if (currentSearch.length === 0) {
       setCurrentSearch([{ address: address, data: data }]);
     } else {
@@ -35,6 +39,7 @@ function Address({ setSelectedTab, setCurrentSearch, currentSearch }) {
       setCurrentSearch(nextCurrentSearch);
     }
     setSelectedTab("2");
+    navigate("/desired-address");
   };
   const submitBTN = async (event) => {
     event.preventDefault();
@@ -73,7 +78,11 @@ function Address({ setSelectedTab, setCurrentSearch, currentSearch }) {
       <GoogleMap
         center={center}
         zoom={13}
-        mapContainerStyle={{ width: "100%", height: "400px" }}
+        mapContainerStyle={{
+          width: "60vw",
+          maxWidth: "1200px",
+          height: "60vh",
+        }}
         options={{
           zoomControl: false,
           streetViewControl: false,

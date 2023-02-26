@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { DataWrapper } from "./DataModal.style";
+import { DataWrapper, Error, PartingWrapper } from "./DataModal.style";
 
 function DataModal({ currentSearch, distance }) {
   const [totalCost, setTotalCost] = useState(0);
+  const [error, setError] = useState(false);
   const [calculatedTime, setCalculatedTime] = useState(0);
   const trimedDistance = parseInt(distance.replace(/\s/g, ""));
 
   const calculateTotalCost = (value) => {
-    if (value <= 0) {
+    setError(false);
+    if (value <= 0 || value > 200) {
       setTotalCost(0);
+      setError(true);
       return;
     }
     let cost = trimedDistance * parseFloat(value);
@@ -31,24 +34,28 @@ function DataModal({ currentSearch, distance }) {
 
   return (
     <DataWrapper>
-      <div>
-        Distance from <span>{currentSearch[0].address}</span> to{" "}
-        <span>{currentSearch[1].address}</span> :<p>{distance}</p>
-        <br />
-        Estimated travel time :<p>{calculatedTime} days</p>
-        <br />
-      </div>
-      <div>
-        Specify the rate per kilometer: <br />
+      <PartingWrapper>
+        <h2>
+          Distance from <i>"{currentSearch[0].address}"</i>
+        </h2>
+        <h2>
+          to <i>"{currentSearch[1].address}"</i> :<span>{distance}</span>
+        </h2>
+        <h2>
+          Estimated travel time :<span>{calculatedTime} days</span>
+        </h2>
+      </PartingWrapper>
+      <PartingWrapper>
+        <h2>Specify the rate per kilometer:</h2>
         <input
           type="number"
           max={200}
           min={0}
           onChange={(e) => calculateTotalCost(e.target.value)}
         />
-        <br />
-        Estimated total cost: {totalCost.toFixed(2)} zl
-      </div>
+        <h2>Estimated total cost: {totalCost.toFixed(2)} zl</h2>
+        {error && <Error>Min value=0, Max value=200</Error>}
+      </PartingWrapper>
     </DataWrapper>
   );
 }

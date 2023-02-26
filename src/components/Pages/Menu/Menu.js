@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Wrapper } from "./Menu.style";
 
-function Menu({ selectedTab, setSelectedTab, setShowResult }) {
+function Menu({ selectedTab, setSelectedTab }) {
+  const [hideMenu, setHideMenu] = useState(false);
+  const navigate = useNavigate();
   const switchTab = (selectedTab) => {
-    setShowResult(false);
     setSelectedTab(selectedTab);
+    if (selectedTab === "1") {
+      navigate("/index");
+    } else if (selectedTab === "2") {
+      navigate("/desired-address");
+    } else if (selectedTab === "4") {
+      navigate("/history");
+    }
   };
+  useEffect(() => {
+    if (selectedTab === "3") {
+      setHideMenu(true);
+    }
+  }, [selectedTab]);
   return (
-    <Wrapper>
+    <Wrapper hideMenu={hideMenu}>
       <div>
         <p
           onClick={() => switchTab("1")}
@@ -22,8 +36,8 @@ function Menu({ selectedTab, setSelectedTab, setShowResult }) {
           Enter desired location
         </p>
         <p
-          onClick={() => switchTab("3")}
-          className={`${selectedTab === "3" ? "markCategory" : ""}`}
+          onClick={() => switchTab("4")}
+          className={`${selectedTab === "4" ? "markCategory" : ""}`}
         >
           History
         </p>

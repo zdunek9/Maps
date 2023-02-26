@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   position: relative;
   form {
     margin-top: 60px;
-  margin-bottom: 60px;
+    margin-bottom: 60px;
     text-align: center;
   }
   input {
@@ -34,11 +34,13 @@ export const Wrapper = styled.div`
     font-size: 1.1rem;
     height: 40px;
     width: 120px;
-    background-color: rgb(61, 48, 41);
+    background-color: var(--button1);
     border: 0;
     border-radius: 5px;
     color: white;
     cursor: pointer;
   }
-
+  button:hover {
+    background-color: var(--button-hover1);
+  }
 `;

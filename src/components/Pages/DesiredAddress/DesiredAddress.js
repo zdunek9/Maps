@@ -4,10 +4,11 @@ import { getPositionAPI } from "../../../api/axios";
 import { useQuery } from "react-query";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import LoadingElement from "../../LoadingElement/LoadingElement";
+import { useNavigate } from "react-router-dom";
 
 const API_KEY = `${process.env.REACT_APP_APIGOOGLEMAPS}`;
 
-function DesiredAddress({ setCurrentSearch, currentSearch, setShowResult}) {
+function DesiredAddress({ setCurrentSearch, currentSearch, setSelectedTab }) {
   const [address, setAddress] = useState("Łódź, Piotrkowska 80 ");
   const [nextBTN, setNextBTN] = useState(false);
   const [center, setCenter] = useState({
@@ -25,12 +26,13 @@ function DesiredAddress({ setCurrentSearch, currentSearch, setShowResult}) {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: API_KEY,
   });
+  const navigate = useNavigate();
 
   const confirmBTN = () => {
     if (currentSearch.length === 0) {
       setWarningModal(true);
       setTimeout(() => setWarningModal(false), 3000);
-      return 
+      return;
     } else if (currentSearch.length === 1) {
       setCurrentSearch((prevState) => [
         ...prevState,
@@ -42,13 +44,20 @@ function DesiredAddress({ setCurrentSearch, currentSearch, setShowResult}) {
       );
       setCurrentSearch(nextCurrentSearch);
     }
-    setShowResult(true);
+    navigate("/result");
   };
   const submitBTN = async (event) => {
     event.preventDefault();
     await refetch();
     setNextBTN(true);
   };
+
+  // useEffect(() => {
+  //   if (currentSearch[1]) {
+  //     setAddress(currentSearch[1].address);
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (data) {
       const nextCenter = {
@@ -58,6 +67,10 @@ function DesiredAddress({ setCurrentSearch, currentSearch, setShowResult}) {
       setCenter(nextCenter);
     }
   }, [data]);
+
+  useEffect(() => {
+    setSelectedTab("2");
+  }, []);
 
   if (!isLoaded) return <LoadingElement />;
   if (isFetching) return <LoadingElement />;
@@ -82,7 +95,11 @@ function DesiredAddress({ setCurrentSearch, currentSearch, setShowResult}) {
       <GoogleMap
         center={center}
         zoom={13}
-        mapContainerStyle={{ width: "100%", height: "400px" }}
+        mapContainerStyle={{
+          width: "60vw",
+          maxWidth: "1200px",
+          height: "60vh",
+        }}
         options={{
           zoomControl: false,
           streetViewControl: false,
