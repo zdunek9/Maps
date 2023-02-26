@@ -58,8 +58,9 @@ function Address({ setSelectedTab, setCurrentSearch, currentSearch }) {
   }, [data]);
 
   if (!isLoaded || isFetching || isLoading) return <LoadingElement />;
-  if (error) return <LoadingElement error={error} />;
+  if (error) return <LoadingElement error={error.message} />;
 
+  console.log(error);
   return (
     <Wrapper>
       <form onSubmit={(event) => submitBTN(event)}>

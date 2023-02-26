@@ -52,12 +52,6 @@ function DesiredAddress({ setCurrentSearch, currentSearch, setSelectedTab }) {
     setNextBTN(true);
   };
 
-  // useEffect(() => {
-  //   if (currentSearch[1]) {
-  //     setAddress(currentSearch[1].address);
-  //   }
-  // }, []);
-
   useEffect(() => {
     if (data) {
       const nextCenter = {
@@ -75,7 +69,7 @@ function DesiredAddress({ setCurrentSearch, currentSearch, setSelectedTab }) {
   if (!isLoaded) return <LoadingElement />;
   if (isFetching) return <LoadingElement />;
   if (isLoading) return <LoadingElement />;
-  if (error) return <LoadingElement error={error} />;
+  if (error) return <LoadingElement error={error.message} />;
 
   return (
     <Wrapper>
