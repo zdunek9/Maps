@@ -1,4 +1,4 @@
-##Features
+## Features
 Determining the route from point A to B with the accuracy of the house number.
 Generation of a route map.
 Calculation of route length, travel time and expected cost according to the formula:
@@ -8,9 +8,9 @@ Calculation of route length, travel time and expected cost according to the form
 Saving the history of route calculation
 Possibility to download the route with calculations to pdf
 
-##The application uses:
+## The application uses:
 hereAPI to determine coordinates
 googleMapAPI for showing the route on the map and the maps themselves.
 styled-components for styling the application ( it may not look the best, but I will deal with that in the future)
 The react library was used for this project
-
+Link to application : https://chipper-gumption-20dba3.netlify.app/
