@@ -8,6 +8,7 @@ import {
 import LoadingElement from "../../LoadingElement/LoadingElement";
 import DataModal from "./DataModal/DataModal";
 import { useNavigate } from "react-router-dom";
+import GetPageToPDF from "./GetPageToPDF";
 /* eslint-disable */ // eslinst is disabled as a result of throwing error that "google is not defined" but its mistake
 
 const API_KEY = `${process.env.REACT_APP_APIGOOGLEMAPS}`;
@@ -49,7 +50,6 @@ function ResultModal({
       setLoading(false);
     }
     calculareRoute();
-    console.log(currentSearch);
   }, []);
 
   useEffect(() => {
@@ -58,6 +58,7 @@ function ResultModal({
 
   const resetBtn = () => {
     setCurrentSearch([]);
+    setSelectedTab("1");
     navigate("/index");
   };
 
@@ -77,10 +78,8 @@ function ResultModal({
           <ErrorMsg>{error}</ErrorMsg>
         </p>
       ) : (
-        <DataModal currentSearch={currentSearch} distance={distance} />
-      )}
-      {!error && (
-        <>
+        <div id="page">
+          <DataModal currentSearch={currentSearch} distance={distance} />
           <GoogleMap
             zoom={11}
             mapContainerStyle={{
@@ -97,8 +96,13 @@ function ResultModal({
           >
             <DirectionsRenderer directions={directionsResponse} />
           </GoogleMap>
+        </div>
+      )}
+      {!error && (
+        <div>
           <button onClick={() => resetBtn()}>Try again</button>
-        </>
+          <GetPageToPDF page="page" />
+        </div>
       )}
     </Wrapper>
   );

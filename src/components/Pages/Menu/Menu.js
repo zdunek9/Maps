@@ -18,6 +18,8 @@ function Menu({ selectedTab, setSelectedTab }) {
   useEffect(() => {
     if (selectedTab === "3") {
       setHideMenu(true);
+    } else {
+      setHideMenu(false);
     }
   }, [selectedTab]);
   return (
